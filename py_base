@@ -1,0 +1,16 @@
+$ pip install taipy
+pip install Flask
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('CurrencySorter.ejs')
+    return render_template('index.ejs')
+    return render_template('courses.ejs')
+    return render_template('scam.ejs')
+    return render_template('FinancialTool.ejs')
+
+if __name__ == '__main__':
+    app.run(debug=True)
