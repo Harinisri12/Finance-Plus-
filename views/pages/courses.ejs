@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+	<%# Head %>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Courses - Finance Plus+</title>
+		<link rel="stylesheet" href="/styles/style.css" type="text/css" />
+		<link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/43c1b0f304.js" crossOrigin="anonymous"></script>
+	</head>
+	<%# end of head %>
+	<body>
+		<%# Import Nav %>
+		<header>
+			<%- include('../partials/nav') %>
+		</header>
+
+		<%# Main content %>
+		<main>
+			<%# Text Header at top of page %>
+			<article class="vrHeader">
+				<h1>Courses</h1>
+				<p>Here are a variety of online courses and resources available for learning about finance!</p>
+			</article>
+			<%# Import cards %>
+			<section>
+				<%- include('../partials/arCards') %>
+				<%# Absolute SVGs that are displayed on page %>
+
+			</section>
+		</main>
+		<%# End of main content %>
+
+		<%# Import footer %>
+		<footer>
+			<%- include('../partials/footer') %>
+		</footer>
+	</body>
+</html>

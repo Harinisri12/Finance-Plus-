@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Tool - Finance Plus+</title>
+		<link rel="stylesheet" href="/styles/finance.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/style.css" type="text/css" />
+		<link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+		<link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/43c1b0f304.js" crossOrigin="anonymous"></script>
+
+
+  <body>
+    		<%# Import nav %>
+		<header>
+			<%- include('../partials/nav') %>
+		</header>
+  <div class="container">
+    <h1>
+      
+      Financial Tool</h1>
+    <div class="budget">
+      <h2>Budgeting</h2>
+      <!-- Budgeting inputs and results -->
+      <label for="income">Monthly Income:</label>
+      <input type="number" id="income" step="0.01" placeholder="Enter your income">
+
+      <label for="expenses">Monthly Expenses:</label>
+      <input type="number" id="expenses" step="0.01" placeholder="Enter your expenses">
+
+      <button onclick="calculateBudget()">Calculate</button>
+
+      <p id="budgetResult">Your remaining budget will be displayed here.</p>
+    </div>
+
+    <div class="goals">
+      <h2>Goal Setting</h2>
+      <!-- Goal setting inputs -->
+      <label for="goal">Your Financial Goal:</label>
+      <input type="number" id="goal" step="0.01" placeholder="Enter your financial goal">
+
+      <label for="monthlySaving">Monthly Saving:</label>
+      <input type="number" id="monthlySaving" step="0.01" placeholder="Enter your desired monthly saving">
+
+      <button onclick="calculateTimeToReachGoal()">Calculate</button>
+
+      <p id="goalResult">Time required to reach your goal will be displayed here.</p>
+
+  
+    </div>
+  </div>
+  <script>function calculateBudget() {
+  const income = parseFloat(document.getElementById('income').value);
+  const expenses = parseFloat(document.getElementById('expenses').value);
+
+  if (!isNaN(income) && !isNaN(expenses)) {
+    const remainingBudget = income - expenses;
+    document.getElementById('budgetResult').innerText = `Your remaining budget: $${remainingBudget.toFixed(2)}`;
+  }
+}
+
+function calculateTimeToReachGoal() {
+  const goal = parseFloat(document.getElementById('goal').value);
+  const monthlySaving = parseFloat(document.getElementById('monthlySaving').value);
+
+  if (!isNaN(goal) && !isNaN(monthlySaving) && monthlySaving > 0) {
+    const timeToReachGoal = goal / monthlySaving;
+    document.getElementById('goalResult').innerText = `Time required to reach your goal: ${Math.ceil(timeToReachGoal)} months`;
+  }
+}
+</script>
+          	<%# Import footer %>
+		<footer>
+			<%- include('../partials/footer') %>
+		</footer>
+</body>
+</html>
+

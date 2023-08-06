@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock - Finance Plus+</title>
+		<link rel="stylesheet" href="/styles/stock.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/style.css" type="text/css" />
+		<link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+		<link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/43c1b0f304.js" crossOrigin="anonymous"></script>
+  <%# Import nav %>
+		<header>
+			<%- include('../partials/nav') %>
+		</header>
+<body>
+  	
+
+ <div class="container">
+    <h1>Real-Time Stock Graph</h1>
+    <canvas id="stockChart"></canvas>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+    <script>// Replace 'YOUR_API_KEY' with your Alpha Vantage API key
+const apiKey = 'YOUR_API_KEY';
+const symbol = 'AAPL'; // Replace with the stock symbol you want to track
+const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${apiKey}`;
+
+async function fetchData() {
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data['Time Series (5min)'];
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
+}
+
+async function createGraph() {
+  const data = await fetchData();
+
+  if (!data) {
+    return;
+  }
+
+  const timeStamps = Object.keys(data).reverse();
+  const stockPrices = timeStamps.map((timestamp) => parseFloat(data[timestamp]['4. close']));
+
+  const ctx = document.getElementById('stockChart').getContext('2d');
+  const stockChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: timeStamps,
+      datasets: [{
+        label: `Stock Price (${symbol})`,
+        data: stockPrices,
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderWidth: 1,
+      }]
+    },
+    options: {
+      scales: {
+        x: {
+          display: true,
+          title: {
+            display: true,
+            text: 'Time'
+          }
+        },
+        y: {
+          display: true,
+          title: {
+            display: true,
+            text: 'Price'
+          }
+        }
+      }
+    }
+  });
+}
+
+// Call the createGraph function every minute to update the data
+createGraph();
+setInterval(createGraph, 60000);
+</script>
+    	<%# Import footer %>
+		<footer>
+			<%- include('../partials/footer') %>
+		</footer>
+</html>
+</div>
+
+

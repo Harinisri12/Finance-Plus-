@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%# Head %>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Scam Detector - Finance Plus+</title>
+    <link rel="stylesheet" href="/styles/chat.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/style.css" type="text/css" />
+		<link rel="stylesheet" href="/styles/style.css" type="text/css" />
+		<link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/43c1b0f304.js" crossOrigin="anonymous"></script>
+
+
+	</head>
+	<%# End of Head %>
+	<body>
+		<%# Import nav %>
+		<header>
+			<%- include('../partials/nav') %>
+		</header>
+
+<main id="main">
+  <div class="chat-box-container">
+    <h1 class="chat-box-header"> Scam Detector </h1>
+    <div class="chat-box">
+
+    </div>
+  </div>
+  <div class="chat-input-container">
+    <input class="chat-input" type="text" name="chat-input" value="">
+    <button class="chat-submit" type="button" name="submit">Submit</button>
+  </div>
+</main>
+<script>
+(function() {
+
+  "use strict";
+
+  const responses = [
+    "Caution: This SMS appears to be a potential scam message. Please exercise caution. 🚫" , "This SMS looks legit ✅"
+  ];
+
+  const submit = document.querySelector(".chat-submit");
+  const chatBox = document.querySelector(".chat-box");
+  const chatInput = document.querySelector(".chat-input");
+
+  // const aiThinking = false;
+
+  function chatTemplate(aiOrPerson) {
+    return (
+      `
+        <div class="ai-person-container">
+          <div class="${aiOrPerson.class}">
+            <p>${aiOrPerson.text}</p>
+          </div>
+          <span class="${aiOrPerson.class}-date">${aiOrPerson.date}</span>
+        </div>
+      `
+    );
+  }
+
+  submit.addEventListener("click", function(e) {
+    appendChatBox(true);
+  });
+
+  document.addEventListener("keypress", function(e) {
+    if (e.keyCode == "13") {
+      appendChatBox(true);
+    }
+  })
+
+  function appendChatBox(fromPerson) {
+    const date = new Date()
+    if (!fromPerson){
+      date.setSeconds(date.getSeconds() + 2)
+    }
+    if (fromPerson && !chatInput.value.trim()) {
+      return;
+    }
+    const timestamp = date.toLocaleTimeString()
+    const newChatDiv = chatTemplate({
+      class: fromPerson ? "person" : "ai",
+      text: fromPerson ? chatInput.value.trim() : aiResponse(),
+      date: timestamp
+    });
+    if (!fromPerson) {
+      // make it so it only responds once to multiple fast sentences
+      setTimeout(function() {
+        chatBox.innerHTML += newChatDiv;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 2000)
+    } else {
+      chatBox.innerHTML += newChatDiv;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    if (fromPerson) {
+      chatInput.value = "";
+      appendChatBox(false);
+    }
+  }
+
+  function aiResponse() {
+    const responseIndex = getRandomInt(0, responses.length - 1);
+    const response = responses[responseIndex];
+    return response;
+  }
+
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+}())
+</script>
+<%# Import footer %>
+		<footer>
+			<%- include('../partials/footer') %>
+		</footer>
